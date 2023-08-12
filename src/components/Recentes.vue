@@ -4,63 +4,93 @@
     <h3>Recentes</h3>
     <hr class="w-25 mt-2 mb-8">
     <div class="d-flex justify-center align-center vh-100">
-      <v-carousel :autoplay="false" :no-swipe="true" :interval="8000" hide-delimiters cycle no-controls height="auto" show-arrows="hover" :hide-delimiter-background="true" :cols="carouselCols" class="carousel-container custom-dot" dot-color="#FFFFFF">
+      <v-carousel
+        :autoplay="false"
+        :no-swipe="true"
+        :interval="8000"
+        hide-delimiters
+        cycle
+        no-controls
+        height="auto"
+        show-arrows="hover"
+        :hide-delimiter-background="true"
+        :cols="carouselCols"
+        class="carousel-container custom-dot"
+        dot-color="#FFFFFF"
+      >
         <v-carousel-item v-for="(group, index) in slideGroups" :key="index">
-        <v-row justify="center">
-          <v-col v-for="(slide, i) in group" :key="i" cols="12" :md="carouselCols" xs="2">
-            <div class="card h-100 w-auto">
-              <div class="card-image" :style="`background-image: url(${images[index * 3 + i]})`"></div>
-              <p class="card-title">{{ slide }} Slide</p>
-              <p class="card-body">{{ text[index * 3 + i] }}</p>
-              <p class="footer">Escrito por <span class="by-name">{{ name[index * 3 + i] }}</span> em <span class="date">{{ date[index * 3 + i] }}</span></p>
-            </div>
-          </v-col>
-        </v-row>
-      </v-carousel-item>
+          <v-row justify="center">
+            <v-col v-for="(slide, i) in group" :key="i" cols="12" :md="carouselCols" xs="2">
+
+              <div class="card h-100 w-auto">
+  <div class="card-image" :style="`background-image: url(${images[index * 3 + i]})`"></div>
+  <p class="card-title">
+    <a :href="`/publi${index * 3 + i}`">{{ slide }} Slide</a>
+  </p>
+  <p class="card-body">{{ text[index * 3 + i] }}</p>
+  <p class="footer">
+    Escrito por <span class="by-name">{{ name[index * 3 + i] }}</span> em <span class="date">{{ date[index * 3 + i] }}</span>
+  </p>
+</div>
+            </v-col>
+          </v-row>
+        </v-carousel-item>
       </v-carousel>
     </div>
   </v-container>
 </template>
 
-
-
 <script>
-  import axios from 'axios';
-  export default {
-    data() {
-      return {
-        carouselCols: 1,
-        slides: [],
-        text: [],
-        name: [],
-        date: [],
-        images: [],
-      };
-    },
-    computed: {
-      slideGroups() {
-        const groups = [];
-        for (let i = 0; i < this.slides.length; i += 3) {
-          groups.push(this.slides.slice(i, i + 3));
-        }
-        return groups;
-      },
-    },
-    methods: {
-      async fetchData() {
-        try {
-          const response = await axios.get(
-            'https://api-rest-post-diegocandido.herokuapp.com/postagens/'
-          );
+import { defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
+import axios from 'axios';
 
-          this.slides = response.data.map(item => item.title);
-          this.text = response.data.map(item => item.description);
-          this.name = response.data.map(item => item.profileName);
-          this.date = response.data.map(item => item.postDate);
-          this.images = response.data.map((item, index) => `https://api-rest-post-diegocandido.herokuapp.com/img/post-${index + 1}.jpg`);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+
+    const openCustomLink = (i) => {
+      router.push(`/publi${i + 1}`);
+    };
+
+    return {
+      openCustomLink,
+    };
+  },
+  data() {
+    return {
+      carouselCols: 1,
+      slides: [],
+      text: [],
+      name: [],
+      date: [],
+      images: [],
+    };
+  },
+  computed: {
+    slideGroups() {
+      const groups = [];
+      for (let i = 0; i < this.slides.length; i += 3) {
+        groups.push(this.slides.slice(i, i + 3));
+      }
+      return groups;
+    },
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get(
+          'https://api-rest-post-diegocandido.herokuapp.com/postagens/'
+        );
+
+        this.slides = response.data.map(item => item.title);
+        this.text = response.data.map(item => item.description);
+        this.name = response.data.map(item => item.profileName);
+        this.date = response.data.map(item => item.postDate);
+        this.images = response.data.map((item, index) => `https://api-rest-post-diegocandido.herokuapp.com/img/post-${index + 1}.jpg`);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
     adjustCarouselCols() {
       if (window.innerWidth >= 960) {
@@ -80,7 +110,7 @@
   beforeUnmount() {
     window.removeEventListener('resize', this.adjustCarouselCols);
   },
-};
+});
 </script>
 
 
@@ -100,20 +130,20 @@
 
     
   }
-
+a{color: #000;
+  text-decoration: none;
+  outline: none;
+}
+a:visited{
+  color: #000;
+  text-decoration: none;
+  outline: none;
+}
   .card:hover {
     transform: translateY(-10px);
   }
-h3{
-  color: #B68887;
-font-family: Inter;
-font-style: normal;
-font-weight: 500;
-line-height: normal;
-}
-hr{
-  border:0.3px solid #B68887;
-}
+
+
   .card-title {
     font-size: 16px;
     margin: 15px 0 0 10px;
