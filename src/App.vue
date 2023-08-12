@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="pa-0 ma-0">
       <Home/>
-    </v-main>
+ </v-main>
   </v-app>
 </template>
 

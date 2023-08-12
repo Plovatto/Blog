@@ -12,7 +12,7 @@
               <v-col v-for="(slide, i) in group" :key="i" cols="12" :md="carouselCols" xs="4">
                 <div class="card h-100 w-auto">
                   <div class="card-photo" :style="`background-image:`"></div>
-                  <div class="card-title">{{ names[index * 3 + i] }}<br><span>{{ roles[index * 3 + i] }}</span></div>
+                  <div class="card-title">{{ name[index * 3 + i] }}<br><span>{{ roles[index * 3 + i] }}</span></div>
                   <div class="card-socials">
           <button  class="card-socials-btn facebook">
             <a href="https://pt-br.facebook.com/login/device-based/regular/login/"><svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" id="Layer_21" height="24" data-name="Layer 21"><title></title><path d="M16.75,9H13.5V7a1,1,0,0,1,1-1h2V3H14a4,4,0,0,0-4,4V9H8v3h2v9h3.5V12H16Z"></path></svg></a>
@@ -35,20 +35,15 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       carouselCols: 1,
-      names: [
-        'Fernando Silva',
-        'Paula Ramos',
-        'Rodrigo Silveira',
-        'Lucas Oliveira',
-        'Maria Silva',
-        'Debora Pacheco',
-      ],
+      name: [],
       roles: [
-      'Jornalista Investigativo',
+        'Jornalista Investigativo',
         'Repórter de Campo',
         'Editor de Notícias',
         'Jornalista Esportivo',
@@ -56,20 +51,28 @@ export default {
         'Editora-Chefe',
       ],
       images: [
-      
+        // Provide image URLs here for each member
       ],
     };
   },
   computed: {
     slideGroups() {
       const groups = [];
-      for (let i = 0; i < this.names.length; i += 3) {
-        groups.push(this.names.slice(i, i + 3));
+      for (let i = 0; i < this.name.length; i += 3) {
+        groups.push(this.name.slice(i, i + 3));
       }
       return groups;
     },
   },
   methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get('https://api-rest-post-diegocandido.herokuapp.com/postagens/');
+        this.name = response.data.map(item => item.profileName);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
     adjustCarouselCols() {
       if (window.innerWidth >= 960) {
         this.carouselCols = 4;
@@ -81,6 +84,7 @@ export default {
     },
   },
   mounted() {
+    this.fetchData();
     this.adjustCarouselCols();
     window.addEventListener('resize', this.adjustCarouselCols);
   },
@@ -89,6 +93,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .card {
   --font-color: #323232;
