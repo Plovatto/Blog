@@ -62,7 +62,7 @@
     background: #FFF;
     
     padding: 20px;
-    width: 35vw;
+    width: 30rem;
     height: 70vh;
     min-height: 380px;
     transition: 0.4s;
@@ -122,4 +122,10 @@ a:hover{
   .by-name {
     font-weight: 700;
   }
+
+  @media screen and (max-width: 600px) {
+  .card {
+    width: 20rem;
+  }
+}
   </style>
