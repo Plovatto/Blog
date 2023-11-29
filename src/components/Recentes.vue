@@ -81,14 +81,14 @@ export default defineComponent({
     async fetchData() {
       try {
         const response = await axios.get(
-          'https://api-rest-post-diegocandido.herokuapp.com/postagens/'
+          'https://apidoego.onrender.com/postagens/'
         );
 
         this.slides = response.data.map(item => item.title);
         this.text = response.data.map(item => item.description);
         this.name = response.data.map(item => item.profileName);
         this.date = response.data.map(item => item.postDate);
-        this.images = response.data.map((item, index) => `https://api-rest-post-diegocandido.herokuapp.com/img/post-${index + 1}.jpg`);
+        this.images = response.data.map((item, index) => `https://apidoego.onrender.com/img/post-${index + 1}.jpg`);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

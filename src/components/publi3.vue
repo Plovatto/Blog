@@ -33,13 +33,13 @@ export default defineComponent({
   data() {
     return {
       noticia: {},
-      imagePath: 'https://api-rest-post-diegocandido.herokuapp.com/img/post-4.jpg',
+      imagePath: 'https://apidoego.onrender.com/img/post-4.jpg',
     };
   },
   async created() {
     try {
       const response = await axios.get(
-        'https://api-rest-post-diegocandido.herokuapp.com/postagem/3'
+        'https://apidoego.onrender.com/postagem/3'
       );
       this.noticia = response.data;
     } catch (error) {

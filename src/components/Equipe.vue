@@ -67,7 +67,7 @@ export default {
   methods: {
     async fetchData() {
       try {
-        const response = await axios.get('https://api-rest-post-diegocandido.herokuapp.com/postagens/');
+        const response = await axios.get('https://apidoego.onrender.com/postagens/');
         this.name = response.data.map(item => item.profileName);
       } catch (error) {
         console.error('Error fetching data:', error);
